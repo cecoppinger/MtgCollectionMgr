@@ -1,0 +1,19 @@
+﻿@model MtgCollectionMgr.ViewModels.AddCardViewModel
+@{
+    ViewData["Title"] = "Add a card";
+}
+
+<h2>Add a Card</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="CardModelID"></label>
+                <select asp-for="CardModelID" asp-items="Model.Cards"></select>
+            </div>
+            <input type="hidden" name="CollectionID" value="@Model.CollectionModelID" />
+            <input type="submit" value="Add Card" />
+        </form>
+    </div>
+</div>

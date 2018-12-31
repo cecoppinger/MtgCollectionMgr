@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MtgApiManager.Lib.Model;
+using MtgApiManager.Lib.Service;
 using MtgCollectionMgr.Models;
 
 namespace MtgCollectionMgr.Controllers
@@ -12,7 +14,9 @@ namespace MtgCollectionMgr.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var cards = GetAllCards();
+            
+            return View(cards);
         }
 
         public IActionResult About()
@@ -38,6 +42,14 @@ namespace MtgCollectionMgr.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public static IEnumerable<Card> GetAllCards()
+        {
+            CardService service = new CardService();
+            var result = service.All();
+            var value = result.Value;
+            return value;
         }
     }
 }

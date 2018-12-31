@@ -1,0 +1,28 @@
+﻿@model MtgCollectionMgr.ViewModels.ViewCollectionViewModel
+
+@{
+    ViewData["Title"] = "Cards";
+}
+
+<h2>Cards</h2>
+
+<div>
+    <h4>Collection: @Model.CollectionModel.Name</h4>
+    <hr />
+    <table>
+        <thead>
+            <tr></tr>
+        </thead>
+        @foreach(var item in Model.Cards)
+        {
+            <tr>
+                <td>@item.CardModel.Name</td>
+                <td><img src="@item.CardModel.ImageUrl" /></td>
+            </tr>
+        }
+    </table>
+</div>
+<div>
+    <a asp-action="AddCard" asp-route-id="@Model.CollectionModel.ID">Add a card</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
