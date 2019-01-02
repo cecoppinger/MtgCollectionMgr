@@ -1,0 +1,14 @@
+﻿@model List<MtgCollectionMgr.Models.CollectionModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<ul>
+    @foreach(var item in Model)
+    {
+        <li>@item.Name<a asp-action="AddCard" asp-route-id="@item.ID">Add a card</a></li>
+
+    }
+</ul>

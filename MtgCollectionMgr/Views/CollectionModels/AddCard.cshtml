@@ -12,7 +12,7 @@
                 <label asp-for="CardModelID"></label>
                 <select asp-for="CardModelID" asp-items="Model.Cards"></select>
             </div>
-            <input type="hidden" name="CollectionID" value="@Model.CollectionModelID" />
+            <input type="hidden" name="CollectionModelID" value="@Model.Collection.ID" />
             <input type="submit" value="Add Card" />
         </form>
     </div>

@@ -13,7 +13,7 @@ namespace MtgCollectionMgr.ViewModels
         public int CollectionModelID { get; set; }
 
         public int CardModelID { get; set; }
-        public List<SelectListItem> Cards { get; set; }
+        public List<SelectListItem> Cards { get; set; } = new List<SelectListItem>();
 
         public AddCardViewModel() { }
         public AddCardViewModel(CollectionModel collectionModel, IEnumerable<CardModel> cards)

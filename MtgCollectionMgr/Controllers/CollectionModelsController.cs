@@ -81,7 +81,7 @@ namespace MtgCollectionMgr.Controllers
                 };
                 _context.Add(newCard);
                 _context.SaveChanges();
-                return View("ViewCollection/" + viewModel.CollectionModelID);
+                return Redirect("/CollectionModels/ViewCollection/" + viewModel.CollectionModelID);
             }
 
             return View(viewModel);

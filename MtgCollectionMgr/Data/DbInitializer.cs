@@ -39,7 +39,7 @@ namespace MtgCollectionMgr.Data
 
             while (result.IsSuccess)
             {
-                if (result.Value.Count == 0)
+                if (result.Value.Count == 0 || page == 20)
                     break;
 
                 foreach (Card card in value)
