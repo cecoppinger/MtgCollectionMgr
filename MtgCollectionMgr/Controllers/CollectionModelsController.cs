@@ -20,7 +20,7 @@ namespace MtgCollectionMgr.Controllers
 
         public IActionResult Index()
         {
-            return Redirect("/CollectionModels/ViewCollection/1");
+            return Redirect("/CollectionModels/ViewCollection");
         }
 
         public IActionResult Search(string searchTerm)
@@ -75,8 +75,18 @@ namespace MtgCollectionMgr.Controllers
 
         public IActionResult AddCard(int id)
         {
-            CollectionModel collection = _context.CollectionModels.Single(x => x.ID == id);
-            return View(new AddCardViewModel(collection, _context.CardModels.ToList()));
+            var card = _context.CardModels.SingleOrDefault(c => c.ID == id);
+            if(card != null)
+            {
+                CardCollectionModel newCard = new CardCollectionModel()
+                {
+                    CardModelID = card.ID,
+                    CollectionModelID = 1
+                };
+                _context.Add(newCard);
+                _context.SaveChanges();
+            }
+            return RedirectToAction("ViewCollection");
         }
 
         //[HttpPost]

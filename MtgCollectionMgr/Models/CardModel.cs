@@ -5,13 +5,23 @@ using System.Threading.Tasks;
 using MtgApiManager.Lib.Dto;
 using MtgApiManager.Lib.Model;
 
+
 namespace MtgCollectionMgr.Models
 {
     public class CardModel
     {
-        public CardModel() { }
+        public string Name { get; set; }
+        public string SetName { get; set; }
+        public string ImageUrl { get; set; }
+        public int ID { get; set; }
+        public int? MultiverseId { get; set; }
 
-        public CardModel(Card card)
+        public double MarketPrice { get; set; }
+        public double MedianPrice { get; set; }
+        public double BuylistMarketPrice { get; set; }
+
+        public CardModel() { }
+        public CardModel(Card card, CardPrice prices)
         {
             //Flavor
             //Id
@@ -30,6 +40,7 @@ namespace MtgCollectionMgr.Models
             //Toughness
             //Type
             //Types
+            SetName = card.SetName;
             MultiverseId = card.MultiverseId;
             Name = card.Name;
             if (card.ImageUrl != null)
@@ -38,19 +49,7 @@ namespace MtgCollectionMgr.Models
                 ImageUrl = "";
         }
 
-        public string Name { get; set; }
-        //public string Rarity { get; set; }
-        //public string Flavor { get; set; }
-        public string ImageUrl { get; set; }
-        public int ID { get; set; }
-        public int? MultiverseId { get; set; }
-        //public IList<string> Names { get; set; }
-        //public int Number { get; set; }
-        //public int Power { get; set; }
-        //public int Toughness { get; set; }
-        //public string Type { get; set; }
-        //public IList<string> SuperTypes { get; set; }
-        //public IL MyProperty { get; set; }
+
 
         public IList<CardCollectionModel> CardCollectionModels { get; set; }
     }
