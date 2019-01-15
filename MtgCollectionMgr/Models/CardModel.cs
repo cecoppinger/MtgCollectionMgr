@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MtgApiManager.Lib.Dto;
 using MtgApiManager.Lib.Model;
 
-
 namespace MtgCollectionMgr.Models
 {
     public class CardModel
@@ -21,7 +20,7 @@ namespace MtgCollectionMgr.Models
         public double BuylistMarketPrice { get; set; }
 
         public CardModel() { }
-        public CardModel(Card card, CardPrice prices)
+        public CardModel(Card card)
         {
             //Flavor
             //Id
@@ -48,8 +47,6 @@ namespace MtgCollectionMgr.Models
             else
                 ImageUrl = "";
         }
-
-
 
         public IList<CardCollectionModel> CardCollectionModels { get; set; }
     }
