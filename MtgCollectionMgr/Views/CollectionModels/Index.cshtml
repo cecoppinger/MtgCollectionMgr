@@ -1,14 +1,19 @@
-﻿@model List<MtgCollectionMgr.Models.CollectionModel>
+﻿@model MtgCollectionMgr.Models.CollectionModel
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
-<ul>
-    @foreach(var item in Model)
-    {
-        <li>@item.Name<a asp-action="AddCard" asp-route-id="@item.ID">Add a card</a></li>
+<div class="row">
+    <div class="col-md-3">
+        <form asp-controller="CollectionModels" asp-action="Search">
+            <div class="form-group">
+                <label>Search for a Card</label>
+                <input type="text" name="searchTerm" class="form-control" />
+            </div>
+            <input type="submit" value="Search" />
+        </form>
+    </div>
+</div>
 
-    }
-</ul>

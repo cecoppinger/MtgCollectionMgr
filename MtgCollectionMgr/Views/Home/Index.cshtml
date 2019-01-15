@@ -3,10 +3,16 @@
     ViewData["Title"] = "Home Page";
 }
 
-<ul>
-@foreach(var item in Model)
+@if (Model != null)
 {
-    <li><img src="@item.ImageUrl" /></li>    
-
+    <ul>
+    @foreach (var item in Model)
+    {
+        <li><img src="@item.ImageUrl" /></li>    
+    }
+    </ul>
 }
-</ul>
+else
+{
+    <p>Nothing here...</p>
+}

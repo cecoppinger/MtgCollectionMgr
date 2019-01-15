@@ -14,7 +14,6 @@ namespace MtgCollectionMgr.Controllers
     public class CardModelsController : Controller
     {
         private readonly MtgCollectionMgrContext _context;
-        public List<Card> cards = GetAllCards().ToList();
 
         public CardModelsController(MtgCollectionMgrContext context)
         {
@@ -150,14 +149,6 @@ namespace MtgCollectionMgr.Controllers
         private bool CardModelExists(int id)
         {
             return _context.CardModels.Any(e => e.ID == id);
-        }
-
-        public static IEnumerable<Card> GetAllCards()
-        {
-            CardService service = new CardService();
-            var result = service.All();
-            var value = result.Value;
-            return value;
         }
     }
 }

@@ -20,7 +20,17 @@ namespace MtgCollectionMgr.Controllers
 
         public IActionResult Index()
         {
-            return View(_context.CollectionModels.ToList());
+            return Redirect("/CollectionModels/ViewCollection/1");
+        }
+
+        public IActionResult Search(string searchTerm)
+        {
+            var results = _context.CardModels.Where(c => c.Name.Contains(searchTerm));
+
+            if (results != null)
+                return View(results);
+
+            return View("Index");
         }
 
         public IActionResult Create()
@@ -46,7 +56,7 @@ namespace MtgCollectionMgr.Controllers
             return View(viewModel);
         }
 
-        public IActionResult ViewCollection(int id)
+        public IActionResult ViewCollection(int? id = 1)
         {
             CollectionModel model = _context.CollectionModels.Single(x => x.ID == id);
             var items = _context.CardCollectionModels
@@ -69,22 +79,22 @@ namespace MtgCollectionMgr.Controllers
             return View(new AddCardViewModel(collection, _context.CardModels.ToList()));
         }
 
-        [HttpPost]
-        public IActionResult AddCard(AddCardViewModel viewModel)
-        {
-            if(ModelState.IsValid)
-            {
-                CardCollectionModel newCard = new CardCollectionModel()
-                {
-                    CardModelID = viewModel.CardModelID,
-                    CollectionModelID = viewModel.CollectionModelID
-                };
-                _context.Add(newCard);
-                _context.SaveChanges();
-                return Redirect("/CollectionModels/ViewCollection/" + viewModel.CollectionModelID);
-            }
+        //[HttpPost]
+        //public IActionResult AddCard(AddCardViewModel viewModel)
+        //{
+        //    if(ModelState.IsValid)
+        //    {
+        //        CardCollectionModel newCard = new CardCollectionModel()
+        //        {
+        //            CardModelID = viewModel.CardModelID,
+        //            CollectionModelID = viewModel.CollectionModelID
+        //        };
+        //        _context.Add(newCard);
+        //        _context.SaveChanges();
+        //        return Redirect("/CollectionModels/ViewCollection/" + viewModel.CollectionModelID);
+        //    }
 
-            return View(viewModel);
-        }
+        //    return View(viewModel);
+        //}
     }
 }

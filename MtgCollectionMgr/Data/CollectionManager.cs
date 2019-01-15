@@ -14,8 +14,6 @@ namespace MtgCollectionMgr.Data
         public CollectionManager(CollectionModel collectionModel)
         {
             _collectionModel = collectionModel;
-        }
-
-        
+        }       
     }
 }

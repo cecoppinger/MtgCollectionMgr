@@ -1,0 +1,18 @@
+﻿@model IEnumerable<MtgCollectionMgr.Models.CardModel>
+@{
+    ViewData["Title"] = "Search";
+}
+
+<h2>Search</h2>
+
+<form asp-controller="CollectionModels" asp-action="AddCard">
+        @foreach (var card in Model)
+        {
+            <div>
+                <a asp-controller="CardModels" asp-action="Details" asp-route-id="@card.ID">@card.Name</a>
+                <img src="@card.ImageUrl" />
+                <input type="hidden" value="@card.ID" name="id" />
+                <input style="display: inline;" type="submit" value="Add Card" />
+            </div>
+        }
+</form>
