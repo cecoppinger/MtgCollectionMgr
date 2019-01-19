@@ -2,6 +2,7 @@
 using System.Text;
 using System.Text.RegularExpressions;
 using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 
 namespace MtgCollectionMgr.Models
 {
@@ -11,9 +12,11 @@ namespace MtgCollectionMgr.Models
         private readonly string _baseUrl = @"https://shop.tcgplayer.com/price-guide/magic";
         private Dictionary<string, string> _selectionStrings = new Dictionary<string, string>();
         private List<string> _setNames = new List<string>();
+        private MtgCollectionMgrContext _context;
 
-        public TcgPriceCrawler()
+        public TcgPriceCrawler(MtgCollectionMgrContext context)
         {
+            _context = context;
             _webLoader = new HtmlWeb();
             LoadSetNames(_webLoader);
             _selectionStrings.Add("marketPrices", "//td[@class='marketPrice']/div");
@@ -23,7 +26,7 @@ namespace MtgCollectionMgr.Models
             _selectionStrings.Add("setNames", "//select[@id='set']/option");
         }
 
-        public List<CardPrice> DoIt()
+        public List<CardPrice> GetPrices()
         {
             List<CardPrice> cardPrices = new List<CardPrice>();
             string currentEndpoint;
@@ -44,16 +47,17 @@ namespace MtgCollectionMgr.Models
                 {
                     for (int i = 0; i < cardNameNodes.Count; i++)
                     {
-                        CardPrice newCard = new CardPrice()
-                        {
-                            SetName = set,
-                            CardName = ReplaceEncodedText(cardNameNodes[i].InnerHtml.Trim()),
-                            MarketPrice = Validate(marketPriceNodes[i]),
-                            MedianPrice = Validate(medianPriceNodes[i]),
-                            BuylistMarketPrice = Validate(buylistMarketPriceNodes[i])
-                        };
+                        //CardPrice newCard = new CardPrice()
+                        //{
+                        //    SetName = set,
+                        //    CardName = ReplaceEncodedText(cardNameNodes[i].InnerHtml.Trim()),
+                        //    MarketPrice = Validate(marketPriceNodes[i]),
+                        //    MedianPrice = Validate(medianPriceNodes[i]),
+                        //    BuylistMarketPrice = Validate(buylistMarketPriceNodes[i])
+                        //};
 
-                        cardPrices.Add(newCard);
+                        //cardPrices.Add(newCard);
+
                     }
                 }
             }

@@ -1,10 +1,8 @@
 ﻿using MtgApiManager.Lib.Model;
 using MtgApiManager.Lib.Service;
 using MtgCollectionMgr.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MtgCollectionMgr.Data
 {
@@ -17,6 +15,9 @@ namespace MtgCollectionMgr.Data
             if (context.CardModels.Any())
                 return;
 
+            CollectionModel model = new CollectionModel();
+            context.Add(model);
+ 
             var cards = GetAllCards();
             
             foreach(Card card in cards)
@@ -24,6 +25,7 @@ namespace MtgCollectionMgr.Data
                 if(card.MultiverseId != null)
                     context.Add(new CardModel(card));
             }
+
             context.SaveChanges();
             
         }
@@ -38,8 +40,8 @@ namespace MtgCollectionMgr.Data
             var value = result.Value;
 
             while (result.IsSuccess)
-            {
-                if (result.Value.Count == 0 || page == 20)
+            {                
+                if (result.Value.Count == 0)
                     break;
 
                 foreach (Card card in value)
