@@ -1,4 +1,4 @@
-﻿@model MtgCollectionMgr.Models.CardFromJson
+﻿@model MtgCollectionMgr.ViewModels.ViewCollectionViewModel
 
 @{
     ViewData["Title"] = "Cards";
@@ -21,9 +21,11 @@
 <hr />
 
 <div>
-    <img src="@Model.Cards[0].ImageUrl" />
-    <p>@Model.Cards[0].ManaCost</p>
-    <p>@Model.Cards[0].ManaCost</p>
-    
+    @foreach(var card in Model.Cards)
+    {
+        <div>
+            <img src="@card.CardModel.ImageUrl" />
+        </div>
+    }
 </div>
 

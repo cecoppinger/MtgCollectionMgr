@@ -18,7 +18,7 @@ namespace MtgCollectionMgr.Models
         public object Flavor { get; set; }
         public string ImageUrl { get; set; }
         public string Language { get; set; }
-        public int Multiverseid { get; set; }
+        public int? Multiverseid { get; set; }
     }
 
     public class Legality
@@ -48,7 +48,7 @@ namespace MtgCollectionMgr.Models
         public string Power { get; set; }
         public string Toughness { get; set; }
         public string Layout { get; set; }
-        public int Multiverseid { get; set; }
+        public int? Multiverseid { get; set; }
         public string ImageUrl { get; set; }
         public List<Ruling> Rulings { get; set; }
         public List<ForeignName> ForeignNames { get; set; }

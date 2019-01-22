@@ -26,12 +26,12 @@ namespace MtgCollectionMgr.Data
             {
                 for(int i = 0; i < cardList.Cards.Count; i++)
                 {
-
+                    CardModel newCard = new CardModel(cardList.Cards[i]);
+                    context.Add(newCard);
                 }
             }
 
             context.SaveChanges();
-
         }
 
         //public static IEnumerable<Card> GetAllCards()
@@ -60,11 +60,11 @@ namespace MtgCollectionMgr.Data
         //    return cards;
         //}
 
-        public static List<CardFromJson> GetCards()
+        private static List<CardFromJson> GetCards()
         {
             List<CardFromJson> cards = new List<CardFromJson>();
 
-            for (int i = 0; i < 448; i++)
+            for (int i = 1; i <= 500; i++)
             {
                 WebRequest request = WebRequest.Create("https://api.magicthegathering.io/v1/cards?page=" + i);
                 WebResponse response = request.GetResponse();
@@ -75,6 +75,9 @@ namespace MtgCollectionMgr.Data
                 string responseFromServer = reader.ReadToEnd();
                 JObject parsedString = JObject.Parse(responseFromServer);
                 CardFromJson myCards = parsedString.ToObject<CardFromJson>();
+
+                if (myCards.Cards.Count == 0)
+                    break;
 
                 cards.Add(myCards);
             }

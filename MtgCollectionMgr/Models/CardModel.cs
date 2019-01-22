@@ -38,7 +38,7 @@ namespace MtgCollectionMgr.Models
             //Type
             //Types
             SetName = card.SetName;
-            //MultiverseId = card.MultiverseId;
+            MultiverseId = card.Multiverseid;
             Name = card.Name;
             if (card.ImageUrl != null)
                 ImageUrl = card.ImageUrl.ToString();

@@ -59,26 +59,21 @@ namespace MtgCollectionMgr.Controllers
             return View(viewModel);
         }
 
-        public IActionResult ViewCollection(int? id)
+        public IActionResult ViewCollection(int? id = 1)
         {
-            WebRequest request = WebRequest.Create("https://api.magicthegathering.io/v1/cards?multiverseid=409741");
+            CollectionModel model = _context.CollectionModels.Single(x => x.ID == id);
+            var items = _context.CardCollectionModels
+                .Include(x => x.CardModel)
+                .Where(x => x.CollectionModelID == id)
+                .ToList();
 
-            //Send that response off
-            WebResponse response = request.GetResponse();
+            ViewCollectionViewModel viewModel = new ViewCollectionViewModel()
+            {
+                CollectionModel = model,
+                Cards = items
+            };
 
-            //Get back the response stream
-            Stream stream = response.GetResponseStream();
-
-            //This makes the info from our new stream accessible
-            StreamReader reader = new StreamReader(stream);
-
-            //This string will be JSON formatted
-            string responseFromServer = reader.ReadToEnd();
-
-            JObject parsedString = JObject.Parse(responseFromServer);
-            CardFromJson myCard = parsedString.ToObject<CardFromJson>();
-
-            return View(myCard);
+            return View(viewModel);
         }
 
         public IActionResult AddCard(int id)
