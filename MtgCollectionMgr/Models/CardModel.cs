@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MtgApiManager.Lib.Dto;
-using MtgApiManager.Lib.Model;
 
 namespace MtgCollectionMgr.Models
 {
@@ -40,7 +38,7 @@ namespace MtgCollectionMgr.Models
             //Type
             //Types
             SetName = card.SetName;
-            MultiverseId = card.MultiverseId;
+            //MultiverseId = card.MultiverseId;
             Name = card.Name;
             if (card.ImageUrl != null)
                 ImageUrl = card.ImageUrl.ToString();

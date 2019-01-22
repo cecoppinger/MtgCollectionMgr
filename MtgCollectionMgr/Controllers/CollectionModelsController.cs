@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MtgCollectionMgr.Models;
 using MtgCollectionMgr.ViewModels;
+using Newtonsoft.Json.Linq;
 
 namespace MtgCollectionMgr.Controllers
 {
@@ -56,21 +59,26 @@ namespace MtgCollectionMgr.Controllers
             return View(viewModel);
         }
 
-        public IActionResult ViewCollection(int? id = 1)
+        public IActionResult ViewCollection(int? id)
         {
-            CollectionModel model = _context.CollectionModels.Single(x => x.ID == id);
-            var items = _context.CardCollectionModels
-                .Include(x => x.CardModel)
-                .Where(x => x.CollectionModelID == id)
-                .ToList();
+            WebRequest request = WebRequest.Create("https://api.magicthegathering.io/v1/cards?multiverseid=409741");
 
-            ViewCollectionViewModel viewModel = new ViewCollectionViewModel()
-            {
-                CollectionModel = model,
-                Cards = items
-            };
+            //Send that response off
+            WebResponse response = request.GetResponse();
 
-            return View(viewModel);
+            //Get back the response stream
+            Stream stream = response.GetResponseStream();
+
+            //This makes the info from our new stream accessible
+            StreamReader reader = new StreamReader(stream);
+
+            //This string will be JSON formatted
+            string responseFromServer = reader.ReadToEnd();
+
+            JObject parsedString = JObject.Parse(responseFromServer);
+            CardFromJson myCard = parsedString.ToObject<CardFromJson>();
+
+            return View(myCard);
         }
 
         public IActionResult AddCard(int id)

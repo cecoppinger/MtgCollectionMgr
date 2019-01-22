@@ -12,12 +12,12 @@ namespace MtgCollectionMgr.Controllers
 {
     public class HomeController : Controller
     {
-        public IActionResult Index()
-        {
-            var cards = GetAllCards();
+        //public IActionResult Index()
+        //{
+        //    var cards = GetAllCards();
             
-            return View(cards);
-        }
+        //    return View(cards);
+        //}
 
         public IActionResult About()
         {
@@ -44,12 +44,12 @@ namespace MtgCollectionMgr.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public static IEnumerable<Card> GetAllCards()
-        {
-            CardService service = new CardService();
-            var result = service.All();
-            var value = result.Value;
-            return value;
-        }
+        //public static IEnumerable<Card> GetAllCards()
+        //{
+        //    CardService service = new CardService();
+        //    var result = service.All();
+        //    var value = result.Value;
+        //    return value;
+        //}
     }
 }
