@@ -12,18 +12,16 @@ namespace MtgCollectionMgr.Models
         private readonly string _baseUrl = @"https://shop.tcgplayer.com/price-guide/magic";
         private Dictionary<string, string> _selectionStrings = new Dictionary<string, string>();
         private List<string> _setNames = new List<string>();
-        private MtgCollectionMgrContext _context;
 
-        public TcgPriceCrawler(MtgCollectionMgrContext context)
-        {
-            _context = context;
+        public TcgPriceCrawler()
+        {           
             _webLoader = new HtmlWeb();
-            LoadSetNames(_webLoader);
             _selectionStrings.Add("marketPrices", "//td[@class='marketPrice']/div");
             _selectionStrings.Add("buylistMarketPrices", "//td[@class='buylistMarketPrice']/div");
             _selectionStrings.Add("medianPrices", "//td[@class='medianPrice']/div");
             _selectionStrings.Add("cardNames", "//div[@class='productDetail']/a");
             _selectionStrings.Add("setNames", "//select[@id='set']/option");
+            LoadSetNames(_webLoader);           
         }
 
         public List<CardPrice> GetPrices()
@@ -47,17 +45,16 @@ namespace MtgCollectionMgr.Models
                 {
                     for (int i = 0; i < cardNameNodes.Count; i++)
                     {
-                        //CardPrice newCard = new CardPrice()
-                        //{
-                        //    SetName = set,
-                        //    CardName = ReplaceEncodedText(cardNameNodes[i].InnerHtml.Trim()),
-                        //    MarketPrice = Validate(marketPriceNodes[i]),
-                        //    MedianPrice = Validate(medianPriceNodes[i]),
-                        //    BuylistMarketPrice = Validate(buylistMarketPriceNodes[i])
-                        //};
+                        CardPrice newCard = new CardPrice()
+                        {
+                            SetName = set,
+                            CardName = ReplaceEncodedText(cardNameNodes[i].InnerHtml.Trim()),
+                            MarketPrice = Validate(marketPriceNodes[i]),
+                            MedianPrice = Validate(medianPriceNodes[i]),
+                            BuylistMarketPrice = Validate(buylistMarketPriceNodes[i])
+                        };
 
-                        //cardPrices.Add(newCard);
-
+                        cardPrices.Add(newCard);
                     }
                 }
             }

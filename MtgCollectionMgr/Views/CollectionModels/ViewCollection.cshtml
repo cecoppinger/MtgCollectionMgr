@@ -20,12 +20,28 @@
 
 <hr />
 
-<div>
-    @foreach(var card in Model.Cards)
-    {
-        <div>
-            <img src="@card.CardModel.ImageUrl" />
-        </div>
-    }
+<div class="collection-details">
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Market Price</th>
+                <th>Median Price</th>
+                <th>Buylist Market Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var card in Model.Cards)
+            {
+                <tr>
+                    <td><a asp-controller="CardModels" asp-action="Details" asp-route-id="@card.CardModel.ID">
+                        @card.CardModel.Name</a></td>
+                    <td>@card.CardModel.MarketPrice</td>
+                    <td>@card.CardModel.MedianPrice</td>
+                    <td>@card.CardModel.BuylistMarketPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 

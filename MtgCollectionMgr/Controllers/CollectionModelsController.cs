@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MtgCollectionMgr.Models;
 using MtgCollectionMgr.ViewModels;
-using Newtonsoft.Json.Linq;
 
 namespace MtgCollectionMgr.Controllers
 {

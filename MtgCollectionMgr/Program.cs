@@ -26,7 +26,7 @@ namespace MtgCollectionMgr
                 try
                 {
                     var context = services.GetRequiredService<MtgCollectionMgrContext>();
-                    DbInitializer.Initialize(context);
+                    //DbInitializer.Initialize(context);
                     //context.Database.EnsureCreated();
                 }
                 catch (Exception ex)

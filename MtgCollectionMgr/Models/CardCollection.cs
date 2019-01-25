@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-//Join table for cards/collections
+﻿//Join table for cards/collections
 namespace MtgCollectionMgr.Models
 {
     public class CardCollectionModel

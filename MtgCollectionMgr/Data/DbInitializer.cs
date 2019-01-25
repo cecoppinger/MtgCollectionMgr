@@ -1,5 +1,4 @@
-﻿
-using MtgCollectionMgr.Models;
+﻿using MtgCollectionMgr.Models;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
@@ -13,9 +12,14 @@ namespace MtgCollectionMgr.Data
         public static void Initialize(MtgCollectionMgrContext context)
         {
             context.Database.EnsureCreated();
+            TcgPriceCrawler priceCrawler = new TcgPriceCrawler();
+            List<CardPrice> prices = priceCrawler.GetPrices();
 
             if (context.CardModels.Any())
+            {
+                InitPrices(context, prices);
                 return;
+            }
 
             CollectionModel model = new CollectionModel();
             context.Add(model);
@@ -33,32 +37,6 @@ namespace MtgCollectionMgr.Data
 
             context.SaveChanges();
         }
-
-        //public static IEnumerable<Card> GetAllCards()
-        //{
-        //    int page = 1;
-        //    List<Card> cards = new List<Card>();
-
-        //    CardService service = new CardService();
-        //    var result = service.Where(x => x.Page, page).All();
-        //    var value = result.Value;
-
-        //    while (result.IsSuccess)
-        //    {                
-        //        if (result.Value.Count == 0)
-        //            break;
-
-        //        foreach (Card card in value)
-        //            cards.Add(card);
-
-        //        page++;
-
-        //        result = service.Where(x => x.Page, page).All();
-        //        value = result.Value;
-        //    }
-
-        //    return cards;
-        //}
 
         private static List<CardFromJson> GetCards()
         {
@@ -84,5 +62,26 @@ namespace MtgCollectionMgr.Data
 
             return cards;
         }
+
+        private static void InitPrices(MtgCollectionMgrContext context, List<CardPrice> prices)
+        {
+            foreach(CardPrice price in prices)
+            {
+                CardModel myCard = context.CardModels
+                    .FirstOrDefault(c => c.Name == price.CardName && c.SetName == price.SetName);
+
+                if(myCard != null)
+                {
+                    myCard.MedianPrice = price.MedianPrice;
+                    myCard.MarketPrice = price.MarketPrice;
+                    myCard.BuylistMarketPrice = price.BuylistMarketPrice;
+                    //context.CardModels.Update(myCard);
+                }
+            }
+
+            context.SaveChanges();
+        }
     }
+
+
 }
