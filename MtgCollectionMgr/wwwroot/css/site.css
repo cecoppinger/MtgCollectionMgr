@@ -21,11 +21,25 @@ td, th {
     margin: 10px;
 }
 
-.collection-details {
+/*.collection-details {
     width: 100%;
-}
+}*/
 
 tr:nth-child(even) {
     background: #f2f2f2;
+}
+
+.hover-img a {
+    position: relative;
+}
+
+.hover-img a span {
+    position: absolute;
+    display: none;
+    z-index: 99;
+}
+
+.hover-img a:hover span {
+    display: block;
 }
 

@@ -42,7 +42,7 @@ namespace MtgCollectionMgr.Data
         {
             List<CardFromJson> cards = new List<CardFromJson>();
 
-            for (int i = 1; i <= 500; i++)
+            for (int i = 1; i <= 600; i++)
             {
                 WebRequest request = WebRequest.Create("https://api.magicthegathering.io/v1/cards?page=" + i);
                 WebResponse response = request.GetResponse();

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MtgCollectionMgr.Models;
@@ -56,7 +58,7 @@ namespace MtgCollectionMgr.Controllers
         public IActionResult ViewCollection(int? id = 1)
         {
             CollectionModel model = _context.CollectionModels.Single(x => x.ID == id);
-            var items = _context.CardCollectionModels
+            var cards = _context.CardCollectionModels
                 .Include(x => x.CardModel)
                 .Where(x => x.CollectionModelID == id)
                 .ToList();
@@ -64,7 +66,10 @@ namespace MtgCollectionMgr.Controllers
             ViewCollectionViewModel viewModel = new ViewCollectionViewModel()
             {
                 CollectionModel = model,
-                Cards = items
+                Cards = cards,
+                TotalMarketPrice = GetTotalPrice(cards, "market"),
+                TotalMedianPrice = GetTotalPrice(cards, "median"),
+                TotalBuylistMarketPrice = GetTotalPrice(cards, "buylist")
             };
 
             return View(viewModel);
@@ -75,33 +80,51 @@ namespace MtgCollectionMgr.Controllers
             var card = _context.CardModels.SingleOrDefault(c => c.ID == id);
             if(card != null)
             {
-                CardCollectionModel newCard = new CardCollectionModel()
+                var exists = _context.CardCollectionModels
+                    .Include(c => c.CardModel)
+                    .Where(c => c.CardModelID == card.ID)
+                    .SingleOrDefault();
+
+                if (exists != null)
                 {
-                    CardModelID = card.ID,
-                    CollectionModelID = 1
-                };
-                _context.Add(newCard);
+                    exists.Quantity++;
+                }
+                else
+                {
+                    CardCollectionModel newCard = new CardCollectionModel()
+                    {
+                        CardModelID = card.ID,
+                        CollectionModelID = 1,
+                        Quantity = 1
+                    };
+                    _context.Add(newCard);
+                }
                 _context.SaveChanges();
             }
             return RedirectToAction("ViewCollection");
         }
+        
+        private double GetTotalPrice(IEnumerable<CardCollectionModel> cards, string priceType)
+        {
+            double total = 0;
 
-        //[HttpPost]
-        //public IActionResult AddCard(AddCardViewModel viewModel)
-        //{
-        //    if(ModelState.IsValid)
-        //    {
-        //        CardCollectionModel newCard = new CardCollectionModel()
-        //        {
-        //            CardModelID = viewModel.CardModelID,
-        //            CollectionModelID = viewModel.CollectionModelID
-        //        };
-        //        _context.Add(newCard);
-        //        _context.SaveChanges();
-        //        return Redirect("/CollectionModels/ViewCollection/" + viewModel.CollectionModelID);
-        //    }
+            switch (priceType)
+            {
+                case "market":
+                    foreach(var card in cards)
+                        total += card.CardModel.MarketPrice * card.Quantity;
+                    break;
+                case "buylist":
+                    foreach (var card in cards)
+                        total += card.CardModel.BuylistMarketPrice * card.Quantity;
+                    break;
+                case "median":
+                    foreach (var card in cards)
+                        total += card.CardModel.MedianPrice * card.Quantity;
+                    break;
+            }
 
-        //    return View(viewModel);
-        //}
+            return total;
+        }
     }
 }

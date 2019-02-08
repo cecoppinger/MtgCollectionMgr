@@ -6,42 +6,51 @@
 
 <h2>My Collection</h2>
 
-<div class="row">
-    <div class="col-md-3">
-        <form asp-controller="CollectionModels" asp-action="Search">
-            <div class="form-group">
-                <label>Search for a Card</label>
-                <input type="text" name="searchTerm" class="form-control" />
-            </div>
-            <input type="submit" value="Search" />
-        </form>
+<div class="container view-collection">
+
+    <partial name="../Partials/_Search.cshtml" />
+
+    <hr />
+
+    <div class="row">
+        <div class="collection-details col-md-9">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Market Price</th>
+                        <th>Median Price</th>
+                        <th>Buylist Market Price</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var card in Model.Cards)
+                    {
+                        <tr>
+                            <td class="hover-img">
+                            <a asp-controller="CardModels" 
+                               asp-action="Details" 
+                               asp-route-id="@card.CardModel.ID">
+                                @card.CardModel.Name (@card.CardModel.SetName)<span><img src="@card.CardModel.ImageUrl" /></span></a></td>                            
+                            <td>@card.CardModel.MarketPrice</td>
+                            <td>@card.CardModel.MedianPrice</td>
+                            <td>@card.CardModel.BuylistMarketPrice</td>
+                            <td>@card.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <div class="price-details col-md-3">
+            <h3>Total Market Price:</h3>
+            <p>@Model.TotalMarketPrice</p>
+            <h3>Total Median Price:</h3>
+            <p>@Model.TotalMedianPrice</p>
+            <h3>Total Buylist Market Price:</h3>
+            <p>@Model.TotalBuylistMarketPrice</p>
+        </div>
     </div>
 </div>
 
-<hr />
-
-<div class="collection-details">
-    <table>
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Market Price</th>
-                <th>Median Price</th>
-                <th>Buylist Market Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var card in Model.Cards)
-            {
-                <tr>
-                    <td><a asp-controller="CardModels" asp-action="Details" asp-route-id="@card.CardModel.ID">
-                        @card.CardModel.Name</a></td>
-                    <td>@card.CardModel.MarketPrice</td>
-                    <td>@card.CardModel.MedianPrice</td>
-                    <td>@card.CardModel.BuylistMarketPrice</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
 

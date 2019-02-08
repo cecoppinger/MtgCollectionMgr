@@ -9,6 +9,8 @@ namespace MtgCollectionMgr.Models
         public int CardModelID { get; set; }
         public CardModel CardModel { get; set; }
 
+        public int Quantity { get; set; }
+
         public CardCollectionModel() { }
         public CardCollectionModel(CollectionModel collectionModel, CardModel cardModel)
         {

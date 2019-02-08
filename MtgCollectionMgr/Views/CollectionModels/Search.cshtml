@@ -5,13 +5,39 @@
 
 <h2>Search</h2>
 
+<div class="container">
 
-@foreach (var card in Model)
-{
-    <div>
-        <a asp-controller="CardModels" asp-action="Details" asp-route-id="@card.ID">@card.Name</a>
-        <img src="@card.ImageUrl" />
-        <a asp-controller="CollectionModels" asp-action="AddCard" asp-route-id="@card.ID">Add Card</a>
+    <partial name="../Partials/_Search.cshtml" />
+
+    <div class="row">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Market Price</th>
+                    <th>Median Price</th>
+                    <th>Buylist Market Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var card in Model)
+                {
+                    <tr>
+                        <td class="hover-img">
+                            <a asp-controller="CardModels" asp-action="Details" asp-route-id="@card.ID">
+                                @card.Name (@card.SetName)<span><img src="@card.ImageUrl" /></span>
+                            </a>
+                        </td>
+                        <td>@card.MarketPrice</td>
+                        <td>@card.MedianPrice</td>
+                        <td>@card.BuylistMarketPrice</td>
+                        <td><a class="btn btn-default" 
+                               asp-controller="CollectionModels" 
+                               asp-action="AddCard" 
+                               asp-route-id="@card.ID">Add Card</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
-}
-
+</div>
