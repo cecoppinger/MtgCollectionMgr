@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MtgCollectionMgr.Models;
@@ -8,6 +10,7 @@ using MtgCollectionMgr.ViewModels;
 
 namespace MtgCollectionMgr.Controllers
 {
+    [Authorize]
     public class CollectionModelsController : Controller
     {
         private readonly MtgCollectionMgrContext _context;
@@ -55,17 +58,23 @@ namespace MtgCollectionMgr.Controllers
             return View(viewModel);
         }
 
-        public IActionResult ViewCollection(int? id = 1)
+        public IActionResult ViewCollection(int? id)
         {
-            CollectionModel model = _context.CollectionModels.Single(x => x.ID == id);
-            var cards = _context.CardCollectionModels
+            //CollectionModel model = _context.CollectionModels.Single(x => x.ID == id);
+            //var cards = _context.CardCollections
+            //    .Include(x => x.CardModel)
+            //    .Where(x => x.CollectionModelID == id)
+            //    .ToList();
+            var user = GetCurrentUser((ClaimsIdentity)User.Identity);
+            var cards = _context.CardCollections
                 .Include(x => x.CardModel)
-                .Where(x => x.CollectionModelID == id)
+                .Where(x => x.UserID == user.ID)
                 .ToList();
+
 
             ViewCollectionViewModel viewModel = new ViewCollectionViewModel()
             {
-                CollectionModel = model,
+                User = user,
                 Cards = cards,
                 TotalMarketPrice = GetTotalPrice(cards, "market"),
                 TotalMedianPrice = GetTotalPrice(cards, "median"),
@@ -80,9 +89,9 @@ namespace MtgCollectionMgr.Controllers
             var card = _context.CardModels.SingleOrDefault(c => c.ID == id);
             if(card != null)
             {
-                var exists = _context.CardCollectionModels
+                var exists = _context.CardCollections
                     .Include(c => c.CardModel)
-                    .Where(c => c.CardModelID == card.ID)
+                    .Where(c => c.CardModelID == card.ID && c.UserID == GetCurrentUser((ClaimsIdentity)User.Identity).ID)
                     .SingleOrDefault();
 
                 if (exists != null)
@@ -94,7 +103,7 @@ namespace MtgCollectionMgr.Controllers
                     CardCollectionModel newCard = new CardCollectionModel()
                     {
                         CardModelID = card.ID,
-                        CollectionModelID = 1,
+                        UserID = GetCurrentUser((ClaimsIdentity)User.Identity).ID,
                         Quantity = 1
                     };
                     _context.Add(newCard);
@@ -102,6 +111,22 @@ namespace MtgCollectionMgr.Controllers
                 _context.SaveChanges();
             }
             return RedirectToAction("ViewCollection");
+        }
+
+        private UserModel GetCurrentUser(ClaimsIdentity identity)
+        {
+            var claims = identity.Claims;
+            string username = claims.Where(c => c.Type == ClaimTypes.Name).Single().Value;
+            if(username != null)
+            {
+                var user = _context.Users.SingleOrDefault(u => u.Username == username);
+                if(user != null)
+                {
+                    return user;
+                }
+            }
+
+            return null;
         }
         
         private double GetTotalPrice(IEnumerable<CardCollectionModel> cards, string priceType)

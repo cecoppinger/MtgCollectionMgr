@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using MtgCollectionMgr.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace MtgCollectionMgr
 {
@@ -38,6 +39,8 @@ namespace MtgCollectionMgr
 
             services.AddDbContext<MtgCollectionMgrContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("MtgCollectionMgrContext")));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +59,7 @@ namespace MtgCollectionMgr
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
+            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

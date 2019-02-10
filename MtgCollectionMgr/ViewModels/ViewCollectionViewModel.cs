@@ -5,7 +5,7 @@ namespace MtgCollectionMgr.ViewModels
 {
     public class ViewCollectionViewModel
     {
-        public CollectionModel CollectionModel { get; set; }
+        public UserModel User { get; set; }
         public IList<CardCollectionModel> Cards { get; set; }
 
         public double TotalMarketPrice { get; set; }

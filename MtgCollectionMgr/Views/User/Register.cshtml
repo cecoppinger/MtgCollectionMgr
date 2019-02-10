@@ -1,0 +1,24 @@
+﻿@model MtgCollectionMgr.ViewModels.RegisterUserViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Register</h2>
+
+<div class="container">
+    <form method="post" class="form-horizontal">
+        <div class="form-group">
+            <label asp-for="Username"></label>
+            <input class="form-control" asp-for="Username" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password"></label>
+            <input class="form-control" asp-for="Password" />
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Register" class="btn btn-default" />
+        </div>
+    </form>
+</div>
+
