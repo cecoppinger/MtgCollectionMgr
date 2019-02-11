@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using MtgCollectionMgr.Models;
 using MtgCollectionMgr.ViewModels;
 
@@ -33,7 +31,6 @@ namespace MtgCollectionMgr.Controllers
         {
             if(AuthenticateUser(userModel.Username, userModel.Password))
             {
-
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, userModel.Username),
@@ -84,7 +81,13 @@ namespace MtgCollectionMgr.Controllers
 
         private bool AuthenticateUser(string username, string password)
         {
-            return true;
+            var exists = _context.Users.Where(u => u.Username == username && u.Password == password).SingleOrDefault();
+            if(exists != null)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

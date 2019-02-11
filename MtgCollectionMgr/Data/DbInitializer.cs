@@ -15,15 +15,6 @@ namespace MtgCollectionMgr.Data
             TcgPriceCrawler priceCrawler = new TcgPriceCrawler();
             List<CardPrice> prices = priceCrawler.GetPrices();
 
-            if (context.CardModels.Any())
-            {
-                InitPrices(context, prices);
-                return;
-            }
-
-            CollectionModel model = new CollectionModel();
-            context.Add(model);
-
             var cards = GetCards();
 
             foreach (CardFromJson cardList in cards)
@@ -34,6 +25,8 @@ namespace MtgCollectionMgr.Data
                     context.Add(newCard);
                 }
             }
+
+            InitPrices(context, prices);
 
             context.SaveChanges();
         }
@@ -79,7 +72,7 @@ namespace MtgCollectionMgr.Data
                 }
             }
 
-            context.SaveChanges();
+            //context.SaveChanges();
         }
     }
 
